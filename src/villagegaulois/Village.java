@@ -124,7 +124,11 @@ public class Village {
 		return null;
 	}
 
-	public String afficherVillageois() {
+	public String afficherVillageois() throws VillageSansChefException {
+		if (chef == null) {
+			throw new VillageSansChefException("Le village n'a pas de chef.");
+		}
+
 		StringBuilder chaine = new StringBuilder();
 		if (nbVillageois < 1) {
 			chaine.append("Il n'y a encore aucun habitant au village du chef " + chef.getNom() + ".\n");
@@ -160,20 +164,20 @@ public class Village {
 		int nbEtalsVendantProduit = etalsVendantProduit.length;
 
 		switch (nbEtalsVendantProduit) {
-		case 0 -> {
+		case 0:
 			chaine.append("Il n'y a pas de vendeur qui propose des " + produit + " au marché.\n");
-		}
-		case 1 -> {
+			break;
+		case 1:
 			Gaulois vendeur = etalsVendantProduit[0].getVendeur();
 			chaine.append("Seul le vendeur " + vendeur.getNom() + " propose des " + produit + " au marché.\n");
-		}
-		default -> {
+			break;
+		default:
 			chaine.append("Les vendeurs qui proposent des " + produit + " sont :\n");
 			for (int i = 0; i < nbEtalsVendantProduit; i++) {
-				Gaulois vendeur = etalsVendantProduit[i].getVendeur();
+				vendeur = etalsVendantProduit[i].getVendeur();
 				chaine.append("- " + vendeur.getNom() + "\n");
 			}
-		}
+			break;
 		}
 
 		return chaine.toString();
